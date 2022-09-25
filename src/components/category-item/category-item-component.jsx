@@ -2,7 +2,6 @@ import './category-item-component.scss';
 
 const CategoryItem = ({category}) => {
     const {imageUrl, title} = category ;
-    console.log(category);
     return (
         <div className = "category-container large">
             <div className = 'background-image' style={{
