@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Poppins&display=swap');
+
 .navigation {
     height: 70px;
     width: 100%;
@@ -21,7 +23,8 @@
       .nav-link {
         padding: 10px 15px;
         cursor: pointer;
-        letter-spacing: .02px;
+        letter-spacing: 0px;
+        font-family: Comfortaa , cursive;
       }
     }
   }
