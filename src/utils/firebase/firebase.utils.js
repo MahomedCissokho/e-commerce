@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect} from "firebase/auth";
+import {getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword} from "firebase/auth";
 import {getFirestore, doc, getDoc, setDoc} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -14,19 +14,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp =  initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
     prompt : 'select_account'
 });
 
+
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async(authUser) => {
+export const createUserDocumentFromAuth = async(authUser, additionalInformation = {}) => {
+  if(!authUser) return ;
   const userRefDoc = doc(db, 'users', authUser.uid);
   const userSnapShot = await getDoc(userRefDoc);
   
@@ -35,14 +37,18 @@ export const createUserDocumentFromAuth = async(authUser) => {
     const createdAt = new Date();
 
     try {
-      setDoc(userRefDoc, {
-        displayName,
-        email,
-        createdAt
-      });
+      alert(additionalInformation);
+      setDoc(userRefDoc, { displayName, email, createdAt,...additionalInformation }) ;
+      
     } catch (error) {
-      console.log("process of recording users datum failed "+ error.message());
+      console.log("process of recording users datum failed " + error.message);
     }
   }
   return userRefDoc;
 }
+
+export const createUserWithEmailAndPasswordAuth = async(email , password) => {
+  if(!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
